@@ -7,7 +7,7 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Override page level menus with this plugin. On a page by page basis you can leave your navigation menu the default, choose different menus for each page, or have a page inherit from its parent. This plugin is particularly useful when you want to have section level navigation menus but your theme does not support it.
+Override the menu in use on a page level when your template only supports one.
 
 == Description ==
 
