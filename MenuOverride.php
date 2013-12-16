@@ -3,7 +3,7 @@
 Plugin Name: Menu Override
 Plugin URI: http://phillipshipley.com/wordpress/menu-override
 Description: Override page level menus with this plugin. On a page by page basis you can leave your navigation menu the default, choose different menus for each page, or have a page inherit from its parent. This plugin is particularly useful when you want to have section level navigation menus but your theme does not support it.
-Version: 0.1
+Version: 0.2
 Author: fillup17
 Author URI: http://phillipshipley.com/
 License: GPL2
@@ -30,25 +30,37 @@ add_action('save_post', array('MenuOverride','saveMetabox'));
 add_filter('wp_nav_menu_args', array('MenuOverride','filterMenu') );
 class MenuOverride
 {
+    const formFieldPrefix = 'mo_menu_location_';
+    
     public static function filterMenu($args = '')
     {
         global $post;
-        $current = get_post_meta($post->ID,'selectedMenu',true);
-        if($current == "PARENT"){
-            $levels = 0;
-            while($current == "PARENT" && $levels < 5){
-                $post = get_post($post->post_parent);
-                $current = get_post_meta($post->ID,'selectedMenu',true);
-                $levels++;
-            }
-        }
-        
-        if($current == 'DEFAULT'){
+        if($args['theme_location'] == ''){
             return $args;
         }
+        $menuOverrideSelection = get_post_meta($post->ID,'menuOverrideSelection',true);
         
-        $args['theme_location'] = '';
-        $args['menu'] = $current;
+        if(in_array($args['theme_location'],array_keys($menuOverrideSelection))){
+            $current = $menuOverrideSelection[$args['theme_location']];
+            if($current == "PARENT"){
+                $levels = 0;
+                while($current == "PARENT" && $levels < 5){
+                    $post = get_post($post->post_parent);
+                    $menuOverrideSelection = get_post_meta($post->ID,'menuOverrideSelection',true);
+                    if(in_array($args['theme_location'],array_keys($menuOverrideSelection))){
+                        $current = $menuOverrideSelection[$args['theme_location']];
+                    }
+                    $levels++;
+                }
+            }
+
+            if($current == 'DEFAULT'){
+                return $args;
+            }
+            
+            //$args['theme_location'] = '';
+            $args['menu'] = $current;
+        }
         
         return $args;
     }
@@ -67,24 +79,33 @@ class MenuOverride
     public static function renderMetabox()
     {
         global $post;
-        $current = get_post_meta($post->ID,'selectedMenu',true);
+        $currentMenu = get_post_meta($post->ID,'menuOverrideSelection',true);
         $menus = self::getMenus();
+        $locations = get_registered_nav_menus();
+        
         wp_nonce_field('overridemenu_nonce', 'overridemenu_nonce' );
         ?>
-        <strong>You may override the menu used on this page by changing this dropdown:</strong><br />
-        <select name="selectedMenu" id="selectedMenu">
+        <strong>You may override any of the menus used on this page by selecting the location and the menu you wish to be displayed there:</strong><br />
+        
+        <?php
+            foreach($locations as $location => $temp){
+                $field = self::formFieldPrefix . preg_replace('/ /','___',$location);
+        ?>
+        <br /><br />Location: <i><?php echo $location; ?></i><br />
+        <select name="<?php echo $field; ?>" id="menuLocation<?php echo $location; ?>">
             <option value="DEFAULT">Use Default Menu</option>
-            <option value="PARENT" <?php if($current == 'PARENT'){ echo "selected='selected'"; }?>>Use Parent Page Menu</option>
+            <option value="PARENT" <?php if($currentMenu[$location] == 'PARENT'){ echo "selected='selected'"; }?>>Use Parent Page Menu</option>
             <?php
                 foreach($menus as $menu){
             ?>
             <option value="<?php echo $menu->slug; ?>"
-                    <?php if($menu->slug == $current){ echo " selected='selected' ";} ?>><?php echo esc_attr($menu->name);?></option>
+                    <?php if($menu->slug == $currentMenu[$location]){ echo " selected='selected' ";} ?>><?php echo esc_attr($menu->name);?></option>
             <?php
                 }
             ?>
         </select>
         <?php
+            }
     }
     
     public static function saveMetabox($post_id)
@@ -95,8 +116,16 @@ class MenuOverride
         if( !isset( $_POST['overridemenu_nonce'] ) || !wp_verify_nonce( $_POST['overridemenu_nonce'], 'overridemenu_nonce' ) ) return;
         // if our current user can't edit this post, bail
         if( !current_user_can( 'edit_post' ) ) return;
+        
+        $menuOverrideSelection = array();
+        foreach($_POST as $key => $value){
+            if(preg_match('/'.self::formFieldPrefix.'(.*)/', $key, $match)){
+                $locName = preg_replace('/___/', ' ', $match[1]);
+                $menuOverrideSelection[$locName] = $value;
+            }
+        }
 
-        update_post_meta($post_id,'selectedMenu',$_POST['selectedMenu']);
+        update_post_meta($post_id,'menuOverrideSelection',$menuOverrideSelection);
     }
     
     public static function getMenus()

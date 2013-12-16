@@ -2,7 +2,7 @@
 Contributors: fillup17
 Tags: menu override, custom menu, custom navigation
 Requires at least: 3.5.1
-Tested up to: 3.6
+Tested up to: 3.8
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -21,10 +21,16 @@ After the plugin is installed you'll have a new option when editing pages in the
 
 == Changelog ==
 
+= 0.2 =
+* Added ability to override multiple menu locations on a single page
+
 = 0.1 =
 * Initial Release
 
 == Upgrade Notice ==
+
+= 0.2 =
+* When upgrading, due to data structure changes, your current overrides will be lost, sorry.
 
 = 0.1 =
 * Initial Release
