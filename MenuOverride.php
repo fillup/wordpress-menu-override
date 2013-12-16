@@ -40,7 +40,7 @@ class MenuOverride
         }
         $menuOverrideSelection = get_post_meta($post->ID,'menuOverrideSelection',true);
         
-        if(in_array($args['theme_location'],array_keys($menuOverrideSelection))){
+        if(is_array($menuOverrideSelection) && in_array($args['theme_location'],array_keys($menuOverrideSelection))){
             $current = $menuOverrideSelection[$args['theme_location']];
             if($current == "PARENT"){
                 $levels = 0;

@@ -21,6 +21,9 @@ After the plugin is installed you'll have a new option when editing pages in the
 
 == Changelog ==
 
+= 0.2.1 =
+* Minor fix to prevent php warning from displaying
+
 = 0.2 =
 * Added ability to override multiple menu locations on a single page
 
