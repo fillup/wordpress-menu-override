@@ -2,7 +2,7 @@
 Contributors: fillup17
 Tags: menu override, custom menu, custom navigation
 Requires at least: 3.5.1
-Tested up to: 3.8
+Tested up to: 3.8.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -21,6 +21,9 @@ After the plugin is installed you'll have a new option when editing pages in the
 
 == Changelog ==
 
+= 0.3 =
+* Added support to override menus on individual post pages
+
 = 0.2.1 =
 * Minor fix to prevent php warning from displaying
 
@@ -31,6 +34,9 @@ After the plugin is installed you'll have a new option when editing pages in the
 * Initial Release
 
 == Upgrade Notice ==
+
+= 0.3 =
+* Upgrade is safe from 0.2.x, data structure does not change so current overrides will not be lost.
 
 = 0.2 =
 * When upgrading, due to data structure changes, your current overrides will be lost, sorry.
