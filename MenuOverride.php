@@ -3,7 +3,7 @@
 Plugin Name: Menu Override
 Plugin URI: http://phillipshipley.com/wordpress/menu-override
 Description: Override page level menus with this plugin. On a page by page basis you can leave your navigation menu the default, choose different menus for each page, or have a page inherit from its parent. This plugin is particularly useful when you want to have section level navigation menus but your theme does not support it.
-Version: 0.2
+Version: 0.2.1
 Author: fillup17
 Author URI: http://phillipshipley.com/
 License: GPL2
@@ -71,6 +71,13 @@ class MenuOverride
                  'Menu Override',
                  array('MenuOverride','renderMetabox'),
                  'page',
+                 'side',
+                 'low'
+                );
+        add_meta_box('menuoverride-metabox',
+                 'Menu Override',
+                 array('MenuOverride','renderMetabox'),
+                 'post',
                  'side',
                  'low'
                 );
