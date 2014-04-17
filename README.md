@@ -28,7 +28,7 @@ After the plugin is installed you'll have a new option when editing pages in the
 
 ## Changelog ##
 
-### 0.4 ###
+### 0.4.1 ###
 * Bug fixes from @cfenzo to fix issues using global $post and enabling support for overriding menu on "page_for_posts" page.
 
 ### 0.3 ###
@@ -45,7 +45,7 @@ After the plugin is installed you'll have a new option when editing pages in the
 
 ## Upgrade Notice ##
 
-### 0.4 ###
+### 0.4.1 ###
 * Upgrade is safe from 0.2.x and 0.3.x. 
 
 ### 0.3 ###
