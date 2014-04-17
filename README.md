@@ -6,7 +6,7 @@ Tags: menu override, custom menu, custom navigation
 
 Requires at least: 3.5.1
 
-Tested up to: 3.8.1
+Tested up to: 3.9
 
 Stable tag: trunk
 
@@ -27,6 +27,9 @@ Simply install the plugin through the Wordpress plugin manager. If you are not a
 After the plugin is installed you'll have a new option when editing pages in the right column to select which menu should be displayed on the page.
 
 ## Changelog ##
+
+### 0.4 ###
+* Bug fixes from @cfenzo to fix issues using global $post and enabling support for overriding menu on "page_for_posts" page.
 
 ### 0.3 ###
 * Added support to override menus on individual post pages
