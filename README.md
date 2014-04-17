@@ -45,6 +45,12 @@ After the plugin is installed you'll have a new option when editing pages in the
 
 ## Upgrade Notice ##
 
+### 0.4 ###
+* Upgrade is safe from 0.2.x and 0.3.x. 
+
+### 0.3 ###
+* Upgrade is safe from 0.2.x, data structure does not change so current overrides will not be lost.
+
 ### 0.2 ###
 * When upgrading, due to data structure changes, your current overrides will be lost, sorry.
 
