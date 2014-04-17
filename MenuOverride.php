@@ -35,18 +35,27 @@ class MenuOverride
     public static function filterMenu($args = '')
     {
         global $post;
+        // $post is global, re-setting this variable creates havoc.. we'll use our own
+        $_post = $post;
+        
         if($args['theme_location'] == ''){
             return $args;
         }
-        $menuOverrideSelection = get_post_meta($post->ID,'menuOverrideSelection',true);
+        
+        // if the current page is the page_for_posts, use the page and not the last post
+        if(is_home(get_option('page_for_posts'))){
+            $_post = get_post(get_option('page_for_posts'));
+        }
+        
+        $menuOverrideSelection = get_post_meta($_post->ID,'menuOverrideSelection',true);
         
         if(is_array($menuOverrideSelection) && in_array($args['theme_location'],array_keys($menuOverrideSelection))){
             $current = $menuOverrideSelection[$args['theme_location']];
             if($current == "PARENT"){
                 $levels = 0;
                 while($current == "PARENT" && $levels < 5){
-                    $post = get_post($post->post_parent);
-                    $menuOverrideSelection = get_post_meta($post->ID,'menuOverrideSelection',true);
+                    $_post = get_post($_post->post_parent);
+                    $menuOverrideSelection = get_post_meta($_post->ID,'menuOverrideSelection',true);
                     if(in_array($args['theme_location'],array_keys($menuOverrideSelection))){
                         $current = $menuOverrideSelection[$args['theme_location']];
                     }
